@@ -29,23 +29,24 @@ endif()
 include(FetchContent)
 
 FetchContent_Declare(
+    imgui
+    GIT_REPOSITORY https://github.com/ocornut/imgui.git
+    GIT_TAG v1.91.0
+)
+
+FetchContent_Declare(
     ImGuiFileDialog
     GIT_REPOSITORY https://github.com/aiekick/ImGuiFileDialog.git
     GIT_TAG master
 )
-FetchContent_MakeAvailable(ImGuiFileDialog)
 
-add_library(stb_image INTERFACE)
-target_include_directories(stb_image INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/external/stb)
+FetchContent_Declare(
+    glm
+    GIT_REPOSITORY https://github.com/g-truc/glm.git
+    GIT_TAG 1.0.1
+)
 
-add_library(tinyobjloader INTERFACE)
-target_include_directories(tinyobjloader INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/external/tinyobjloader)
-
-add_library(vma INTERFACE)
-target_include_directories(vma INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/external/vma)
-
-add_library(glm INTERFACE)
-target_include_directories(glm INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/external/glm)
+FetchContent_MakeAvailable(imgui ImGuiFileDialog glm)
 
 set(SHADER_COMPILED_DIR ${CMAKE_CURRENT_BINARY_DIR}/shaders_compiled)
 file(MAKE_DIRECTORY ${SHADER_COMPILED_DIR})
@@ -105,10 +106,8 @@ target_link_libraries(Engine
     PRIVATE
     Vulkan::Vulkan
     SDL3::SDL3
+    imgui
     ImGuiFileDialog
-    stb_image
-    tinyobjloader
-    vma
     glm
 )
 
@@ -121,6 +120,9 @@ target_include_directories(Engine PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/ui
     ${CMAKE_CURRENT_SOURCE_DIR}/src/utils
     ${CMAKE_CURRENT_SOURCE_DIR}/src/vulkan
+    ${CMAKE_CURRENT_SOURCE_DIR}/external/stb
+    ${CMAKE_CURRENT_SOURCE_DIR}/external/tinyobjloader
+    ${CMAKE_CURRENT_SOURCE_DIR}/external/vma
     ${SHADER_COMPILED_DIR}
 )
 
