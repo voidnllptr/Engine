@@ -26,10 +26,14 @@ if(NOT GLSLC_EXECUTABLE)
     message(FATAL_ERROR "glslc not found. Please install Vulkan SDK and ensure glslc is in PATH")
 endif()
 
-add_library(ImGuiFileDialog STATIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/external/imguifiledialog/ImGuiFileDialog.cpp
+include(FetchContent)
+
+FetchContent_Declare(
+    ImGuiFileDialog
+    GIT_REPOSITORY https://github.com/aiekick/ImGuiFileDialog.git
+    GIT_TAG master
 )
-target_include_directories(ImGuiFileDialog PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/external/imguifiledialog)
+FetchContent_MakeAvailable(ImGuiFileDialog)
 
 add_library(stb_image INTERFACE)
 target_include_directories(stb_image INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/external/stb)
