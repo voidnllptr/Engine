@@ -27,18 +27,21 @@ if(NOT GLSLC_EXECUTABLE)
 endif()
 
 add_library(ImGuiFileDialog STATIC
-    external/imguifiledialog/ImGuiFileDialog.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/external/imguifiledialog/ImGuiFileDialog.cpp
 )
-target_include_directories(ImGuiFileDialog PUBLIC external/imguifiledialog)
+target_include_directories(ImGuiFileDialog PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/external/imguifiledialog)
 
 add_library(stb_image INTERFACE)
-target_include_directories(stb_image INTERFACE external/stb)
+target_include_directories(stb_image INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/external/stb)
 
 add_library(tinyobjloader INTERFACE)
-target_include_directories(tinyobjloader INTERFACE external/tinyobjloader)
+target_include_directories(tinyobjloader INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/external/tinyobjloader)
 
 add_library(vma INTERFACE)
-target_include_directories(vma INTERFACE external/vma)
+target_include_directories(vma INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/external/vma)
+
+add_library(glm INTERFACE)
+target_include_directories(glm INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/external/glm)
 
 set(SHADER_COMPILED_DIR ${CMAKE_CURRENT_BINARY_DIR}/shaders_compiled)
 file(MAKE_DIRECTORY ${SHADER_COMPILED_DIR})
@@ -62,34 +65,34 @@ compile_shader(${VERTEX_SHADER_SRC} ${VERTEX_SHADER_OUT})
 compile_shader(${FRAGMENT_SHADER_SRC} ${FRAGMENT_SHADER_OUT})
 
 set(ENGINE_SOURCES
-    core/Engine.cpp
-    core/SceneObject.cpp
-    core/Timer.cpp
-    core/Window.cpp
-    core/WindowSettings.cpp
-    renderer/Camera.cpp
-    renderer/Material.cpp
-    renderer/Renderer.cpp
-    renderer/Scene.cpp
-    resources/Mesh.cpp
-    resources/Model.cpp
-    resources/Shader.cpp
-    resources/Texture.cpp
-    ui/EditorUI.cpp
-    ui/ImGuiLayer.cpp
-    utils/File.cpp
-    utils/StbImage.cpp
-    vulkan/Buffer.cpp
-    vulkan/CommandBuffer.cpp
-    vulkan/Descriptors.cpp
-    vulkan/Device.cpp
-    vulkan/FrameBuffer.cpp
-    vulkan/Memory.cpp
-    vulkan/Pipeline.cpp
-    vulkan/RenderPass.cpp
-    vulkan/Swapchain.cpp
-    vulkan/Sync.cpp
-    main.cpp
+    src/main.cpp
+    src/core/Engine.cpp
+    src/core/SceneObject.cpp
+    src/core/Timer.cpp
+    src/core/Window.cpp
+    src/core/WindowSettings.cpp
+    src/renderer/Camera.cpp
+    src/renderer/Material.cpp
+    src/renderer/Renderer.cpp
+    src/renderer/Scene.cpp
+    src/resources/Mesh.cpp
+    src/resources/Model.cpp
+    src/resources/Shader.cpp
+    src/resources/Texture.cpp
+    src/ui/EditorUI.cpp
+    src/ui/ImGuiLayer.cpp
+    src/utils/File.cpp
+    src/utils/StbImage.cpp
+    src/vulkan/Buffer.cpp
+    src/vulkan/CommandBuffer.cpp
+    src/vulkan/Descriptors.cpp
+    src/vulkan/Device.cpp
+    src/vulkan/FrameBuffer.cpp
+    src/vulkan/Memory.cpp
+    src/vulkan/Pipeline.cpp
+    src/vulkan/RenderPass.cpp
+    src/vulkan/Swapchain.cpp
+    src/vulkan/Sync.cpp
 )
 
 add_executable(Engine ${ENGINE_SOURCES})
@@ -98,22 +101,22 @@ target_link_libraries(Engine
     PRIVATE
     Vulkan::Vulkan
     SDL3::SDL3
-    imgui
     ImGuiFileDialog
     stb_image
     tinyobjloader
     vma
+    glm
 )
 
 target_include_directories(Engine PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/core
-    ${CMAKE_CURRENT_SOURCE_DIR}/renderer
-    ${CMAKE_CURRENT_SOURCE_DIR}/resources
-    ${CMAKE_CURRENT_SOURCE_DIR}/ui
-    ${CMAKE_CURRENT_SOURCE_DIR}/utils
-    ${CMAKE_CURRENT_SOURCE_DIR}/vulkan
-    external/glm
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/core
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/renderer
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/resources
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/ui
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/utils
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/vulkan
     ${SHADER_COMPILED_DIR}
 )
 
